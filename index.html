@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vigovia Itinerary Builder</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-plane"></i>
+                    <span class="logo-text">vigovia</span>
+                </div>
+                <div class="tagline">PLAN.PACK.GO!</div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar Navigation -->
+            <nav class="sidebar">
+                <div class="nav-items">
+                    <a href="#trip-overview" class="nav-item active" data-section="trip-overview">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Trip Overview</span>
+                    </a>
+                    <a href="#day-activities" class="nav-item" data-section="day-activities">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Day Activities</span>
+                    </a>
+                    <a href="#flights" class="nav-item" data-section="flights">
+                        <i class="fas fa-plane"></i>
+                        <span>Flight Details</span>
+                    </a>
+                    <a href="#hotels" class="nav-item" data-section="hotels">
+                        <i class="fas fa-hotel"></i>
+                        <span>Hotel Bookings</span>
+                    </a>
+                    <a href="#payment" class="nav-item" data-section="payment">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Payment Plan</span>
+                    </a>
+                    <a href="#visa" class="nav-item" data-section="visa">
+                        <i class="fas fa-passport"></i>
+                        <span>Visa Details</span>
+                    </a>
+                    <a href="#notes" class="nav-item" data-section="notes">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>Important Notes</span>
+                    </a>
+                    <a href="#services" class="nav-item" data-section="services">
+                        <i class="fas fa-concierge-bell"></i>
+                        <span>Scope of Service</span>
+                    </a>
+                    <a href="#inclusions" class="nav-item" data-section="inclusions">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Inclusions</span>
+                    </a>
+                    <a href="#activities" class="nav-item" data-section="activities">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <span>Activities</span>
+                    </a>
+                    <a href="#terms" class="nav-item" data-section="terms">
+                        <i class="fas fa-file-contract"></i>
+                        <span>Terms</span>
+                    </a>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn--secondary" id="load-example">Load Example</button>
+                    <button class="btn btn--outline" id="save-draft">Save Draft</button>
+                    <button class="btn btn--outline" id="load-draft">Load Draft</button>
+                    <button class="btn btn--primary" id="preview-itinerary">Preview</button>
+                    <button class="btn btn--primary" id="generate-pdf">Generate PDF</button>
+                </div>
+            </nav>
+
+            <!-- Content Area -->
+            <main class="content-area">
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+
+                <!-- Trip Overview Section -->
+                <section id="trip-overview" class="form-section active">
+                    <h2>Trip Overview</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Customer Name *</label>
+                            <input type="text" class="form-control" id="customer-name" placeholder="Enter customer name" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Trip Title *</label>
+                            <input type="text" class="form-control" id="trip-title" placeholder="Enter trip title" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Duration (Days) *</label>
+                            <input type="number" class="form-control" id="duration-days" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Duration (Nights) *</label>
+                            <input type="number" class="form-control" id="duration-nights" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Number of Travelers *</label>
+                            <input type="number" class="form-control" id="travelers" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Departure From *</label>
+                            <input type="text" class="form-control" id="departure-from" placeholder="Enter departure city" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Departure Date *</label>
+                            <input type="date" class="form-control" id="departure-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Arrival Date *</label>
+                            <input type="date" class="form-control" id="arrival-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Destination *</label>
+                            <input type="text" class="form-control" id="destination" placeholder="Enter destination city" required>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Day Activities Section -->
+                <section id="day-activities" class="form-section">
+                    <div class="section-header">
+                        <h2>Day-by-Day Activities</h2>
+                        <button class="btn btn--primary" id="add-day">Add Day</button>
+                    </div>
+                    <div id="days-container">
+                        <!-- Days will be dynamically added here -->
+                    </div>
+                </section>
+
+                <!-- Flight Details Section -->
+                <section id="flights" class="form-section">
+                    <div class="section-header">
+                        <h2>Flight Details</h2>
+                        <button class="btn btn--primary" id="add-flight">Add Flight</button>
+                    </div>
+                    <div id="flights-container">
+                        <!-- Flights will be dynamically added here -->
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Flight Notes</label>
+                        <div id="flight-notes-container">
+                            <!-- Flight notes will be dynamically added here -->
+                        </div>
+                        <button class="btn btn--outline" id="add-flight-note">Add Note</button>
+                    </div>
+                </section>
+
+                <!-- Hotel Bookings Section -->
+                <section id="hotels" class="form-section">
+                    <div class="section-header">
+                        <h2>Hotel Bookings</h2>
+                        <button class="btn btn--primary" id="add-hotel">Add Hotel</button>
+                    </div>
+                    <div id="hotels-container">
+                        <!-- Hotels will be dynamically added here -->
+                    </div>
+                </section>
+
+                <!-- Payment Plan Section -->
+                <section id="payment" class="form-section">
+                    <h2>Payment Plan</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Total Amount</label>
+                            <input type="text" class="form-control" id="total-amount" placeholder="₹ 9,00,000">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">GST Note</label>
+                            <input type="text" class="form-control" id="gst-note" placeholder="For 3 Pax (Inclusive Of GST)">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">TCS Status</label>
+                            <input type="text" class="form-control" id="tcs-status" placeholder="Not Collected">
+                        </div>
+                    </div>
+                    <div class="section-header">
+                        <h3>Installments</h3>
+                        <button class="btn btn--primary" id="add-installment">Add Installment</button>
+                    </div>
+                    <div id="installments-container">
+                        <!-- Installments will be dynamically added here -->
+                    </div>
+                </section>
+
+                <!-- Visa Details Section -->
+                <section id="visa" class="form-section">
+                    <h2>Visa Details</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Visa Type</label>
+                            <input type="text" class="form-control" id="visa-type" placeholder="123456">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Validity</label>
+                            <input type="text" class="form-control" id="visa-validity" placeholder="123456">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Processing Date</label>
+                            <input type="text" class="form-control" id="visa-processing" placeholder="123456">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Important Notes Section -->
+                <section id="notes" class="form-section">
+                    <div class="section-header">
+                        <h2>Important Notes</h2>
+                        <button class="btn btn--primary" id="add-note">Add Note</button>
+                    </div>
+                    <div id="notes-container">
+                        <!-- Notes will be dynamically added here -->
+                    </div>
+                </section>
+
+                <!-- Scope of Service Section -->
+                <section id="services" class="form-section">
+                    <div class="section-header">
+                        <h2>Scope of Service</h2>
+                        <button class="btn btn--primary" id="add-service">Add Service</button>
+                    </div>
+                    <div id="services-container">
+                        <!-- Services will be dynamically added here -->
+                    </div>
+                </section>
+
+                <!-- Inclusion Summary Section -->
+                <section id="inclusions" class="form-section">
+                    <div class="section-header">
+                        <h2>Inclusion Summary</h2>
+                        <button class="btn btn--primary" id="add-inclusion">Add Inclusion</button>
+                    </div>
+                    <div id="inclusions-container">
+                        <!-- Inclusions will be dynamically added here -->
+                    </div>
+                </section>
+
+                <!-- Activities Section -->
+                <section id="activities" class="form-section">
+                    <div class="section-header">
+                        <h2>Activity Table</h2>
+                        <button class="btn btn--primary" id="add-activity">Add Activity</button>
+                    </div>
+                    <div id="activities-container">
+                        <!-- Activities will be dynamically added here -->
+                    </div>
+                </section>
+
+                <!-- Terms Section -->
+                <section id="terms" class="form-section">
+                    <h2>Terms and Conditions</h2>
+                    <div class="form-group">
+                        <label class="form-label">Terms and Conditions</label>
+                        <textarea class="form-control" id="terms-content" rows="6" placeholder="Enter terms and conditions..."></textarea>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Preview Modal -->
+    <div id="preview-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Itinerary Preview</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body" id="preview-content">
+                <!-- Preview content will be generated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Generating PDF...</p>
+        </div>
+    </div>
+
+    <!-- Hidden file input for loading drafts -->
+    <input type="file" id="file-input" accept=".json" style="display: none;">
+
+    <script src="app.js"></script>
+</body>
+</html>
